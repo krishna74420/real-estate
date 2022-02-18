@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "RealEstateApp",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

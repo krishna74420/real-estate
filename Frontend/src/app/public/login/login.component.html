@@ -1,0 +1,44 @@
+<ion-header class="ion-no-border">
+  <ion-progress-bar *ngIf="isLoading" color="primary" type="indeterminate" value="0.5"></ion-progress-bar>
+</ion-header>
+
+<ion-content [fullscreen]="true" >
+
+  <ion-item class="ion-margin-top" lines="none">
+    <ion-label color="primary"><b>Welcome to Real Estate App</b></ion-label>
+  </ion-item>
+  <span class="divider line one-line">Login to your Account</span>
+  <ion-item *ngIf="showError" color="primary">
+    <ion-label ><b>Invalid Credentials</b></ion-label>
+  </ion-item>
+  <form (ngSubmit)="doLogin()" [formGroup]="loginForm">
+
+    <ion-item class="ion-margin-top">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input formControlName="email"></ion-input>
+    </ion-item>
+
+    <div *ngIf="loginForm.controls.email.errors && loginForm.controls.email.touched">
+      <ion-note *ngIf="loginForm.controls.email.errors?.pattern" class="ion-margin-start ion-color-danger" color="red" translate>
+        Enter Valid Email Address
+      </ion-note>
+    </div>
+    <ion-item class="ion-margin-top">
+      <ion-label position="floating">Password</ion-label>
+      <ion-input formControlName="password"></ion-input>
+      <div *ngIf="loginForm.controls.password.errors && loginForm.controls.password.touched">
+        <ion-note *ngIf="loginForm.controls.password.errors?.minlength" class="ion-margin-start ion-color-danger" color="red" translate>
+          Password must be at least 6 characters
+        </ion-note>
+      </div>
+    </ion-item>
+    <ion-row class="ion-justify-content-center ion-margin-vertical">
+      <ion-col>
+        <ion-button [disabled]="!loginForm.valid || isLoading"  expand="full" type="submit">Login</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+</ion-content>
+
+

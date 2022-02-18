@@ -1,0 +1,526 @@
+{
+	"info": {
+		"_postman_id": "ce4aa60c-ab3c-466e-b871-8a367aa4ee0b",
+		"name": "Real Estate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successfully Login\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response\r",
+									"if (response.code == 200){\r",
+									"    const json = response.json();\r",
+									"    pm.environment.set('lastLoginEmail', json['user']['email']);\r",
+									"    pm.environment.set('lastLoginId', json['user']['id']);\r",
+									"    pm.environment.set('access_token', json['access_token']);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "info@realestate.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Real Estate",
+			"item": [
+				{
+					"name": "create real estate",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let real_state_type = ['house', 'department', 'land', 'commercial_ground'];\r",
+									"let type = real_state_type[_.random(0,3)];\r",
+									"let room = _.random(0,12);\r",
+									"let bathroom = _.random(1,12);\r",
+									"// let bathroom = 0;\r",
+									"\r",
+									"pm.environment.set(\"current_real_state_type\", type);\r",
+									"pm.environment.set(\"room\", room);\r",
+									"pm.environment.set(\"bathroom\", bathroom);\r",
+									"\r",
+									"if(type.includes('land') || type.includes('commercial_ground')) {\r",
+									"  pm.environment.set(\"bathroom\", 0);\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful Created\", function () {\r",
+									"     pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response\r",
+									"if (response.code == 201){\r",
+									"    const json = response.json();\r",
+									"    pm.environment.set('lastRealEstateId', json['id']);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{$randomFirstName}}",
+									"type": "text"
+								},
+								{
+									"key": "real_estate_type",
+									"value": "{{current_real_state_type}}",
+									"type": "text"
+								},
+								{
+									"key": "external_number",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "Internal_number",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "neighborhood",
+									"value": "{{$randomFirstName}}",
+									"type": "text"
+								},
+								{
+									"key": "street",
+									"value": "{{$randomStreetName}}",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "{{$randomCity}}",
+									"type": "text"
+								},
+								{
+									"key": "country",
+									"value": "{{$randomCountryCode}}",
+									"type": "text"
+								},
+								{
+									"key": "rooms",
+									"value": "{{room}}",
+									"type": "text"
+								},
+								{
+									"key": "bathrooms",
+									"value": "{{bathroom}}",
+									"type": "text"
+								},
+								{
+									"key": "comments",
+									"value": "{{$randomLoremSentence}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/real_estate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"real_estate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update real estate",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let real_estate_type = ['house', 'department', 'land', 'commercial_ground'];\r",
+									"let type = real_estate_type[ _.random(0,3)];\r",
+									"let room = _.random(0,12);\r",
+									"let bathroom = _.random(0,12);\r",
+									"\r",
+									"pm.environment.set(\"current_real_estate_type\", type);\r",
+									"pm.environment.set(\"room\", room);\r",
+									"pm.environment.set(\"bathroom\", bathroom);\r",
+									"\r",
+									"if(type.includes('land') || type.includes('commercial_ground')) {\r",
+									"  pm.environment.set(\"bathroom\", 0);\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "{{$randomFirstName}}",
+									"type": "text"
+								},
+								{
+									"key": "real_estate_type",
+									"value": "{{current_real_estate_type}}",
+									"type": "text"
+								},
+								{
+									"key": "external_number",
+									"value": "{{$randomPhoneNumber}}",
+									"type": "text"
+								},
+								{
+									"key": "Internal_number",
+									"value": "{{$randomPhoneNumber}}",
+									"type": "text"
+								},
+								{
+									"key": "neighborhood",
+									"value": "{{$randomFirstName}}",
+									"type": "text"
+								},
+								{
+									"key": "street",
+									"value": "{{$randomStreetName}}",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "{{$randomCity}}",
+									"type": "text"
+								},
+								{
+									"key": "country",
+									"value": "{{$randomCountryCode}}",
+									"type": "text"
+								},
+								{
+									"key": "rooms",
+									"value": "{{room}}",
+									"type": "text"
+								},
+								{
+									"key": "bathrooms",
+									"value": "{{bathroom}}",
+									"type": "text"
+								},
+								{
+									"key": "comments",
+									"value": "{{$randomLoremSentence}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/real_estate/{{lastRealEstateId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"real_estate",
+								"{{lastRealEstateId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get last real state",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let real_state_type = ['house', 'department', 'land', 'commercial_ground'];\r",
+									"let type = real_state_type[ _.random(0,3)];\r",
+									"let room = _.random(0,12);\r",
+									"let bathroom = _.random(0,12);\r",
+									"\r",
+									"pm.environment.set(\"current_real_state_type\", type);\r",
+									"pm.environment.set(\"room\", room);\r",
+									"pm.environment.set(\"bathroom\", bathroom);\r",
+									"\r",
+									"if(type.includes('land') || type.includes('commercial_ground')) {\r",
+									"  pm.environment.set(\"bathroom\", 0);\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/real_estate/{{lastRealEstateId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"real_estate",
+								"{{lastRealEstateId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all real state",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let real_state_type = ['house', 'department', 'land', 'commercial_ground'];\r",
+									"let type = real_state_type[ _.random(0,3)];\r",
+									"let room = _.random(0,12);\r",
+									"let bathroom = _.random(0,12);\r",
+									"\r",
+									"pm.environment.set(\"current_real_state_type\", type);\r",
+									"pm.environment.set(\"room\", room);\r",
+									"pm.environment.set(\"bathroom\", bathroom);\r",
+									"\r",
+									"if(type.includes('land') || type.includes('commercial_ground')) {\r",
+									"  pm.environment.set(\"bathroom\", 0);\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/real_estate/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"real_estate",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete real state",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let real_state_type = ['house', 'department', 'land', 'commercial_ground'];\r",
+									"let type = real_state_type[ _.random(0,3)];\r",
+									"let room = _.random(0,12);\r",
+									"let bathroom = _.random(0,12);\r",
+									"\r",
+									"pm.environment.set(\"current_real_state_type\", type);\r",
+									"pm.environment.set(\"room\", room);\r",
+									"pm.environment.set(\"bathroom\", bathroom);\r",
+									"\r",
+									"if(type.includes('land') || type.includes('commercial_ground')) {\r",
+									"  pm.environment.set(\"bathroom\", 0);\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/real_estate/{{lastRealEstateId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"real_estate",
+								"{{lastRealEstateId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

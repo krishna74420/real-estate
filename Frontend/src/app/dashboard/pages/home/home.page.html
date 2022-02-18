@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Real Estate Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-card *ngFor="let data of realEstateDetails">
+
+      <ion-item class="ion-activated" >
+        <ion-label><b>Name:</b> {{data.name}}</ion-label>
+      </ion-item>
+      <ion-item class="ion-activated" >
+        <ion-label><b>City:</b> {{data.city}}</ion-label>
+      </ion-item>
+      <ion-item class="ion-activated" >
+        <ion-label><b>Type:</b> {{data.real_estate_type}}</ion-label>
+      </ion-item>
+      <ion-item class="ion-activated" >
+        <ion-label><b>Country Code: </b>{{data.country}}</ion-label>
+      </ion-item>
+    </ion-card>
+    <ion-item *ngIf="noDataFound" lines="none">
+      <ion-label>No More User Found</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
