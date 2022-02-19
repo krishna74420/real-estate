@@ -139,7 +139,7 @@ class RealEstateTest extends TestCase
     {
         $mockData =  RealEstate::factory()->make();
         $postData = $mockData->toArray();
-        $postData['country'] = 'TT';
+        $postData['country'] = 'XD';
 
         $this->json('POST', "api/real_estate", $postData, ['Accept' => 'application/json'])
             ->assertStatus(422)
@@ -147,7 +147,7 @@ class RealEstateTest extends TestCase
                 "message" => "The given data was invalid.",
                 "errors" => [
                     "country" => [
-                        "The TT is not valid country code."
+                        "The XD is not valid country code."
                     ],
                 ],
                 "status" => 422

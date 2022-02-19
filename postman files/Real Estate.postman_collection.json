@@ -151,7 +151,7 @@
 									"type": "text"
 								},
 								{
-									"key": "Internal_number",
+									"key": "internal_number",
 									"value": "",
 									"type": "text"
 								},
@@ -263,7 +263,7 @@
 									"type": "text"
 								},
 								{
-									"key": "Internal_number",
+									"key": "internal_number",
 									"value": "{{$randomPhoneNumber}}",
 									"type": "text"
 								},
